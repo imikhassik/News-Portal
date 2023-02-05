@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Sum
 
-from news.resources import TYPES, article
+from news.resources import TYPES, article, news
 
 
 class Author(models.Model):
@@ -9,13 +10,15 @@ class Author(models.Model):
     rating = models.IntegerField(default=0)
 
     def update_rating(self):
-        author_articles = Post.objects.filter(author=self.user)
-        article_rating = author_articles.sum('rating') * 3
-        author_comments = Comment.objects.filter(author=self.user)
-        comment_rating = author_comments.sum('rating')
-        article_comments = Comment.objects.filter(post=author_articles)
-        article_comments_rating = article_comments.sum('rating')
-        return sum((article_rating, comment_rating, article_comments_rating))
+        articles = Post.objects.filter(author=self)
+        article_rating = articles.aggregate(Sum('rating')).get('rating__sum') * 3
+        comments = Comment.objects.filter(user=self.user)
+        comment_rating = comments.aggregate(Sum('rating')).get('rating__sum')
+        others_comments = Comment.objects.filter(post__author=self)
+        others_comments_rating = others_comments.aggregate(Sum('rating')).get('rating__sum')
+        overall = sum((article_rating, comment_rating, others_comments_rating))
+        self.rating = overall
+        self.save()
 
 
 class Category(models.Model):
@@ -34,11 +37,11 @@ class Post(models.Model):
 
     def like(self):
         self.rating += 1
-        return self.rating
+        self.save()
 
     def dislike(self):
         self.rating -= 1
-        return self.rating
+        self.save()
 
     def preview(self):
         prev_text = self.text[:125]
@@ -60,8 +63,8 @@ class Comment(models.Model):
 
     def like(self):
         self.rating += 1
-        return self.rating
+        self.save()
 
     def dislike(self):
         self.rating -= 1
-        return self.rating
+        self.save()
