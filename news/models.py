@@ -9,17 +9,23 @@ class Author(models.Model):
     rating = models.IntegerField(default=0)
 
     def update_rating(self):
-        pass
+        author_articles = Post.objects.filter(author=self.user)
+        article_rating = author_articles.sum('rating') * 3
+        author_comments = Comment.objects.filter(author=self.user)
+        comment_rating = author_comments.sum('rating')
+        article_comments = Comment.objects.filter(post=author_articles)
+        article_comments_rating = article_comments.sum('rating')
+        return sum((article_rating, comment_rating, article_comments_rating))
 
 
 class Category(models.Model):
-    name = models.CharField(unique=True)
+    name = models.CharField(max_length=255, unique=True)
 
 
 class Post(models.Model):
     type = models.CharField(max_length=1, choices=TYPES, default=article)
     created_on = models.DateTimeField(auto_now_add=True)
-    title = models.CharField()
+    title = models.CharField(max_length=255)
     text = models.TextField()
     rating = models.IntegerField(default=0)
 
