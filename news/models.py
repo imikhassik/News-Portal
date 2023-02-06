@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
 
-from news.resources import TYPES, article, news
+from news.resources import *
 
 
 class Author(models.Model):
