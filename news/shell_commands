@@ -8,8 +8,8 @@ User.objects.create_user('natalya')
 2. Создать два объекта модели Author, связанные с пользователями.
 user1 = User.objects.get(pk=1)
 user2 = User.objects.get(pk=2)
-Author.objects.create(user=pk1)
-Author.objects.create(user=pk2)
+Author.objects.create(user=user1)
+Author.objects.create(user=user2)
 
 
 3. Добавить 4 категории в модель Category.
@@ -26,7 +26,7 @@ author1 = Author.objects.get(pk=1)
 Post.objects.create(type=news, title='Вышел Python 2.7.18, последний релиз ветки Python 2.x', text=news_text1, author=author1)
 
 article_text1 = """text copy from habr.com"""
-author2 = Author.objects.get(pk=1)
+author2 = Author.objects.get(pk=2)
 Post.objects.create(type=article, title='Шесть Python-пакетов, которые рекомендуется использовать в каждом веб-приложении на Django', text=article_text1, author=author2)
 
 article_text2 = """text copy from habr.com"""
