@@ -1,0 +1,94 @@
+from news.models import *
+
+User.objects.create_user('ilya')
+User.objects.create_user('natalya')
+
+user1 = User.objects.get(pk=1)
+user2 = User.objects.get(pk=2)
+Author.objects.create(user=pk1)
+Author.objects.create(user=pk2)
+
+Category.objects.create(name='Python')
+Category.objects.create(name='Django')
+Category.objects.create(name='SQL')
+Category.objects.create(name='Random')
+Category.objects.create(name='IT History')
+
+news_text1 = """text copy from habr.com"""
+author1 = Author.objects.get(pk=1)
+Post.objects.create(type=news, title='Вышел Python 2.7.18, последний релиз ветки Python 2.x', text=news_text1, author=author1)
+
+article_text1 = """text copy from habr.com"""
+author2 = Author.objects.get(pk=1)
+Post.objects.create(type=article, title='Шесть Python-пакетов, которые рекомендуется использовать в каждом веб-приложении на Django', text=article_text1, author=author2)
+
+article_text2 = """text copy from habr.com"""
+Post.objects.create(type=article, title='Полное руководство: средства и способы миграции данных в Windows Azure SQL Database', text=article_text2, author=author1)
+
+cat1 = Category.objects.get(pk=1)
+cat2 = Category.objects.get(pk=2)
+cat3 = Category.objects.get(pk=3)
+cat4 = Category.objects.get(pk=4)
+cat5 = Category.objects.get(pk=5)
+cat6 = Category.objects.get(pk=6)
+
+news1 = Post.objects.get(pk=1)
+article1 = Post.objects.get(pk=2)
+article2 = Post.objects.get(pk=3)
+
+news1.categories.add(cat1, cat5)
+article1.categories.add(cat1, cat2)
+article2.categories.add(cat3, cat6)
+
+comment1 = 'А где список новых фич?'
+Comment.objects.create(text=comment1, post=news1, user=user2)
+
+comment2 = """comment copy from habr.com"""
+Comment.objects.create(text=comment2, post=article1, user=user1)
+
+comment3 = 'Спасибо за собранную воедино информацию. Полезно.'
+Comment.objects.create(text=comment3, post=article2, user=user2)
+
+comment4 = 'а какой wysiwyg сейчас в тренде?'
+Comment.objects.create(text=comment4, post=article1, user=user2)
+
+news1.like()
+news1.like()
+news1.like()
+news1.like()
+news1.dislike()
+
+article1.dislike()
+article1.dislike()
+article1.dislike()
+article1.dislike()
+article1.dislike()
+article1.dislike()
+
+article2.like()
+article2.dislike()
+article2.like()
+article2.dislike()
+article2.like()
+article2.like()
+article2.like()
+article2.like()
+
+comment1=Comment.objects.get(pk=1)
+comment2=Comment.objects.get(pk=2)
+comment3=Comment.objects.get(pk=3)
+comment4=Comment.objects.get(pk=4)
+comment1.like()
+comment2.dislike()
+comment2.dislike()
+comment3.like()
+comment3.like()
+comment3.like()
+
+author1.update_rating()
+author2.update_rating()
+
+User.objects.all().order_by('-author__rating').values('username', 'author__rating')[0]
+
+best_post = Post.objects.all().order_by('-rating')[0]
+Post.objects.all().order_by('-rating').values('created_on__date', 'author__user__username', 'rating', 'title')[0]
