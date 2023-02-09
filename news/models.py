@@ -48,7 +48,7 @@ class Post(models.Model):
         return f'{prev_text}...'
 
     def __str__(self):
-        return f'{self.title} {self.author} {self.categories} {self.preview()}'
+        return f"{self.title} {self.author.user.username} {self.categories.all().values('name')} {self.preview()}"
 
 
 class PostCategory(models.Model):
