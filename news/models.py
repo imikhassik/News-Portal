@@ -47,6 +47,9 @@ class Post(models.Model):
         prev_text = self.text[:125]
         return f'{prev_text}...'
 
+    def __str__(self):
+        return f'{self.title} {self.author} {self.categories} {self.preview()}'
+
 
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
