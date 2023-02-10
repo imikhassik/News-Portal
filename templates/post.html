@@ -2,8 +2,13 @@
 
 {% block title %}
 Post
-{% end block title %}
+{% endblock title %}
 
 {% block content %}
-<h1>{{ post }}</h1>
+<h1>{{ post.title }}</h1>
+<hr>
+{{ post.text }}
+<hr>
+Автор: {{ post.author.user.username }} <br>
+Рейтинг статьи: {{ post.rating }} <br>
 {% endblock content %}

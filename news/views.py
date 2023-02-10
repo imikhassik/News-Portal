@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
-from .models import Post
+from .models import Post, Category
 
 
 class PostsList(ListView):
     model = Post
-    ordering = 'title'
+    ordering = '-created_on'
     template_name = 'posts.html'
     context_object_name = 'posts'
 

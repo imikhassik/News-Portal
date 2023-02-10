@@ -5,6 +5,15 @@ News
 {% endblock title %}
 
 {% block content %}
-<h1>Все новости и статьи</h1>
-{{ posts }}
+<h1>Всего новостей и статей: {{ posts|length }}</h1>
+<hr>
+<table>
+    {% for post in posts %}
+    <tr>
+        <td>{{ post.title }}</td>
+        <td>{{ post.created_on|date:'m.d.y' }}</td>
+        <td>{{ post.text|truncatewords:20 }}</td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock content %}
