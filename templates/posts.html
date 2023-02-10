@@ -11,7 +11,7 @@ News
     {% for post in posts %}
     <tr>
         <td>{{ post.title }}</td>
-        <td>{{ post.created_on|date:'m.d.y' }}</td>
+        <td>{{ post.created_on|date:'d.m.y' }}</td>
         <td>{{ post.text|truncatewords:20 }}</td>
     </tr>
     {% endfor %}

@@ -6,9 +6,7 @@ Post
 
 {% block content %}
 <h1>{{ post.title }}</h1>
+{{ post.created_on|date:'d.m.y' }}
 <hr>
 {{ post.text }}
-<hr>
-Автор: {{ post.author.user.username }} <br>
-Рейтинг статьи: {{ post.rating }}
 {% endblock content %}
