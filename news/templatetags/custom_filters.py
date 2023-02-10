@@ -13,7 +13,7 @@ UNDESIRABLE_WORDS = [
 @register.filter()
 def censor(text: str):
     if type(text) is not str:
-        raise TypeError
+        raise ValueError('censor filter only accepts str values')
 
     for word in UNDESIRABLE_WORDS:
         text = text.replace(word, f"{word[0]}{''.join(['*' for _ in word[1:len(word)]])}")
