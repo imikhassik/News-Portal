@@ -6,6 +6,7 @@ register = template.Library()
 
 UNDESIRABLE_WORDS = [
     'последний',
+    'python',
 ]
 
 
@@ -13,10 +14,9 @@ UNDESIRABLE_WORDS = [
 def censor(text: str):
     if type(text) is not str:
         raise TypeError
-    censored_text = []
-    for word in text.split():
-        if word in UNDESIRABLE_WORDS:
-            censored_text.append(word[0]+''.join(['*' for _ in word]))
-        else:
-            censored_text.append(word)
-    return ' '.join(censored_text)
+
+    for word in UNDESIRABLE_WORDS:
+        text = text.replace(word, f"{word[0]}{''.join(['*' for _ in word[1:len(word)]])}")
+        word = word.title()
+        text = text.replace(word, f"{word[0]}{''.join(['*' for _ in word[1:len(word)]])}")
+    return text
