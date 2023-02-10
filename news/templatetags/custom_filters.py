@@ -10,7 +10,9 @@ UNDESIRABLE_WORDS = [
 
 
 @register.filter()
-def censor(text):
+def censor(text: str):
+    if type(text) is not str:
+        raise TypeError
     censored_text = []
     for word in text.split():
         if word in UNDESIRABLE_WORDS:
