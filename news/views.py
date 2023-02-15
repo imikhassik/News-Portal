@@ -1,6 +1,5 @@
-from django.shortcuts import render
 from django.views.generic import ListView, DetailView
-from .models import Post, Category
+from .models import Post
 
 
 class PostsList(ListView):
@@ -8,6 +7,7 @@ class PostsList(ListView):
     ordering = '-created_on'
     template_name = 'posts.html'
     context_object_name = 'posts'
+    paginate_by = 1
 
 
 class PostDetail(DetailView):
