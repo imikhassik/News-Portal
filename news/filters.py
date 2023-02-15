@@ -5,8 +5,8 @@ from .models import Post
 class PostsFilter(FilterSet):
     class Meta:
         model = Post
-        fields = [
-            'title',
-            'author',
-            'created_on'
-        ]
+        fields = {
+            'title': ['icontains'],
+            'author__user': ['exact'],
+            'created_on': ['gt']
+        }
