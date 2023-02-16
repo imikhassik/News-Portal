@@ -14,5 +14,5 @@ class PostsFilter(FilterSet):
         model = Post
         fields = {
             'title': ['icontains'],
-            'author__user': ['exact'],
+            'author': ['exact'],
         }
