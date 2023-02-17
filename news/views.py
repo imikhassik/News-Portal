@@ -5,6 +5,7 @@ from django.views.generic import (
 from .models import Post, Category
 from .filters import PostsFilter
 from .forms import PostForm
+from .resources import *
 
 
 class PostsList(ListView):
@@ -48,3 +49,6 @@ class PostsCreate(CreateView):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
+
+    def get_initial(self):
+        return {'type': news}
