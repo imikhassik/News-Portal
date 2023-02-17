@@ -1,7 +1,10 @@
-from django.views.generic import ListView, DetailView
+from django.views.generic import (
+    ListView, DetailView, CreateView
+)
 
-from .models import Post
+from .models import Post, Category
 from .filters import PostsFilter
+from .forms import PostForm
 
 
 class PostsList(ListView):
@@ -39,3 +42,9 @@ class PostsSearch(ListView):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
         return context
+
+
+class PostsCreate(CreateView):
+    form_class = PostForm
+    model = Post
+    template_name = 'post_edit.html'

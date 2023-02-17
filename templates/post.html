@@ -10,4 +10,6 @@ Post
 {{ post.created_on|date:'d.m.y' }}
 <hr>
 {{ post.text|censor }}
+<hr>
+Автор: {{ post.author }}
 {% endblock content %}
