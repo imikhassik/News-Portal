@@ -45,10 +45,19 @@ class PostsSearch(ListView):
         return context
 
 
-class PostsCreate(CreateView):
+class NewsCreate(CreateView):
     form_class = PostForm
     model = Post
-    template_name = 'post_edit.html'
+    template_name = 'news_edit.html'
 
     def get_initial(self):
         return {'type': news}
+
+
+class ArticlesCreate(CreateView):
+    form_class = PostForm
+    model = Post
+    template_name = 'article_edit.html'
+
+    def get_initial(self):
+        return {'type': article}
