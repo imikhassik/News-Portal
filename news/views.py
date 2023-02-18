@@ -1,8 +1,8 @@
 from django.views.generic import (
-    ListView, DetailView, CreateView
+    ListView, DetailView, CreateView, UpdateView
 )
 
-from .models import Post, Category
+from .models import Post
 from .filters import PostsFilter
 from .forms import PostForm
 from .resources import *
@@ -61,3 +61,9 @@ class ArticlesCreate(CreateView):
 
     def get_initial(self):
         return {'type': article}
+
+
+class NewsUpdate(UpdateView):
+    form_class = PostForm
+    model = Post
+    template_name = 'news_edit.html'
