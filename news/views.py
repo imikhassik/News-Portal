@@ -69,8 +69,10 @@ class PostUpdate(UpdateView):
 
     def get_template_names(self):
         post = self.get_object()
-        if post.type == news:
+        if post.type == news and 'news' in self.request.path:
             self.template_name = 'news_edit.html'
-        else:
+        elif post.type == article and 'article' in self.request.path:
             self.template_name = 'article_edit.html'
+        else:
+            self.template_name = '404.html'
         return self.template_name
