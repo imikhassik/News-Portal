@@ -63,7 +63,14 @@ class ArticlesCreate(CreateView):
         return {'type': article}
 
 
-class NewsUpdate(UpdateView):
+class PostUpdate(UpdateView):
     form_class = PostForm
     model = Post
-    template_name = 'news_edit.html'
+
+    def get_template_names(self):
+        post = self.get_object()
+        if post.type == news:
+            self.template_name = 'news_edit.html'
+        else:
+            self.template_name = 'article_edit.html'
+        return self.template_name
