@@ -1,6 +1,7 @@
 from django.views.generic import (
-    ListView, DetailView, CreateView, UpdateView
+    ListView, DetailView, CreateView, UpdateView, DeleteView
 )
+from django.urls import reverse_lazy
 
 from .models import Post
 from .filters import PostsFilter
@@ -67,12 +68,27 @@ class PostUpdate(UpdateView):
     form_class = PostForm
     model = Post
 
-    def get_template_names(self):
+    def get_template_name(self):
         post = self.get_object()
         if post.type == news and 'news' in self.request.path:
             self.template_name = 'news_edit.html'
         elif post.type == article and 'article' in self.request.path:
             self.template_name = 'article_edit.html'
+        else:
+            self.template_name = '404.html'
+        return self.template_name
+
+
+class PostDelete(DeleteView):
+    model = Post
+    success_url = reverse_lazy('posts_list')
+
+    def get_template_names(self):
+        post = self.get_object()
+        if post.type == news and 'news' in self.request.path:
+            self.template_name = 'news_delete.html'
+        elif post.type == article and 'article' in self.request.path:
+            self.template_name = 'article_delete.html'
         else:
             self.template_name = '404.html'
         return self.template_name
