@@ -15,5 +15,4 @@ class PostsFilter(FilterSet):
         fields = {
             'title': ['icontains'],
             'author': ['exact'],
-            'type': ['exact'],
         }

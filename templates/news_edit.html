@@ -1,7 +1,11 @@
 {% extends 'flatpages/default.html' %}
 
 {% block content %}
-<h1>Создать или изменить новость</h1>
+{% if 'create' in request.path %}
+    <h1>Создать новость</h1>
+{% elif 'edit' in request.path %}
+    <h1> Изменить новость</h1>
+{% endif %}
 <hr>
     <form action="" method="POST">
         {% csrf_token %}
