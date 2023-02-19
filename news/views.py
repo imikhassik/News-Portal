@@ -2,6 +2,7 @@ from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView
 )
 from django.urls import reverse_lazy
+from django.shortcuts import HttpResponseRedirect
 
 from .models import Post
 from .filters import PostsFilter
@@ -79,8 +80,11 @@ class NewsCreate(CreateView):
     model = Post
     template_name = 'news_edit.html'
 
-    def get_initial(self):
-        return {'type': news}
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.type = 'N'
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class ArticlesCreate(CreateView):
@@ -88,8 +92,11 @@ class ArticlesCreate(CreateView):
     model = Post
     template_name = 'article_edit.html'
 
-    def get_initial(self):
-        return {'type': article}
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.type = 'A'
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class PostUpdate(UpdateView):
