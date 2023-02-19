@@ -2,14 +2,14 @@
 {% load custom_filters %}
 
 {% block title %}
-Posts
+News
 {% endblock title %}
 
 {% block content %}
-<h1>Всего новостей и статей: {{ num_of_posts }}</h1>
+<h1>Всего новостей: {{ num_of_news }}</h1>
 <hr>
 <table>
-    {% for post in posts %}
+    {% for post in news %}
     <tr>
         <td>{{ post.title|censor }}</td>
         <td>{{ post.created_on|date:'d.m.y' }}</td>
