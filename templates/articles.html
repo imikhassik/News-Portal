@@ -1,0 +1,39 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+{% block title %}
+Articles
+{% endblock title %}
+
+{% block content %}
+<h1>Всего статей: {{ num_of_articles }}</h1>
+<hr>
+<table>
+    {% for post in articles %}
+    <tr>
+        <td>{{ post.title|censor }}</td>
+        <td>{{ post.created_on|date:'d.m.y' }}</td>
+        <td>{{ post.text|censor|truncatewords:20 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% if page_obj.has_previous %}
+    <a href="?page=1">1</a>
+    {% if page_obj.previous_page_number != 1 %}
+        ...
+        <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+    {% endif %}
+{% endif %}
+
+{{ page_obj.number }}
+
+{% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+    {% if page_obj.next_page_number != page_obj.paginator.num_pages %}
+        ...
+        <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+    {% endif %}
+{% endif %}
+
+{% endblock content %}

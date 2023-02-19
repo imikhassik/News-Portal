@@ -36,6 +36,20 @@ class NewsList(ListView):
         return context
 
 
+class ArticlesList(ListView):
+    model = Post
+    queryset = Post.objects.filter(type='A')
+    ordering = '-created_on'
+    template_name = 'articles.html'
+    context_object_name = 'articles'
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['num_of_articles'] = len(Post.objects.filter(type='A'))
+        return context
+
+
 class PostDetail(DetailView):
     model = Post
     template_name = 'post.html'
@@ -82,7 +96,7 @@ class PostUpdate(UpdateView):
     form_class = PostForm
     model = Post
 
-    def get_template_name(self):
+    def get_template_names(self):
         post = self.get_object()
         if post.type == news and 'news' in self.request.path:
             self.template_name = 'news_edit.html'
@@ -97,7 +111,7 @@ class PostDelete(DeleteView):
     model = Post
     success_url = reverse_lazy('posts_list')
 
-    def get_template_name(self):
+    def get_template_names(self):
         post = self.get_object()
         if post.type == news and 'news' in self.request.path:
             self.template_name = 'news_delete.html'
