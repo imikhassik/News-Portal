@@ -3,6 +3,7 @@ from django.views.generic import (
 )
 from django.urls import reverse_lazy
 from django.shortcuts import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Post
 from .filters import PostsFilter
@@ -99,9 +100,10 @@ class ArticlesCreate(CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class PostUpdate(UpdateView):
+class PostUpdate(LoginRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
+    # login_url = '/login/'
 
     def get_template_names(self):
         post = self.get_object()
