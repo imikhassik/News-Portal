@@ -103,7 +103,6 @@ class ArticlesCreate(CreateView):
 class PostUpdate(LoginRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
-    # login_url = '/login/'
 
     def get_template_names(self):
         post = self.get_object()
