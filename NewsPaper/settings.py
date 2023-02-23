@@ -38,12 +38,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'news',
-    'accounts',
     'django.contrib.sites',
     'django.contrib.flatpages',
+
     'django_filters',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    
+    'news',
+    'accounts',
 ]
+
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/posts/'
 
 SITE_ID = 1
 
@@ -74,6 +84,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 WSGI_APPLICATION = 'NewsPaper.wsgi.application'
@@ -134,5 +149,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]
-
-LOGIN_REDIRECT_URL = '/posts/'
