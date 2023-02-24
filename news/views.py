@@ -103,6 +103,11 @@ class ArticlesCreate(LoginRequiredMixin, CreateView):
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_author'] = not self.request.user.groups.filter(name='authors').exists()
+        return context
+
 
 class PostUpdate(LoginRequiredMixin, UpdateView):
     form_class = PostForm
