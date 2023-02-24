@@ -53,7 +53,7 @@ INSTALLED_APPS = [
 ]
 
 LOGIN_URL = '/accounts/login/'
-# LOGIN_REDIRECT_URL = '/posts/'
+LOGIN_REDIRECT_URL = '/posts/'
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
