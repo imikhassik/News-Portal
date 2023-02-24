@@ -92,6 +92,7 @@ class NewsCreate(LoginRequiredMixin, CreateView):
         context['is_not_author'] = not self.request.user.groups.filter(name='authors').exists()
         return context
 
+
 class ArticlesCreate(LoginRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
@@ -123,6 +124,11 @@ class PostUpdate(LoginRequiredMixin, UpdateView):
             self.template_name = '404.html'
         return self.template_name
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_author'] = not self.request.user.groups.filter(name='authors').exists()
+        return context
+
 
 class PostDelete(LoginRequiredMixin, DeleteView):
     model = Post
@@ -137,3 +143,8 @@ class PostDelete(LoginRequiredMixin, DeleteView):
         else:
             self.template_name = '404.html'
         return self.template_name
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_author'] = not self.request.user.groups.filter(name='authors').exists()
+        return context

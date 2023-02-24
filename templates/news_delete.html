@@ -3,9 +3,13 @@
 {% block content %}
 <h1>Удаление новости</h1>
 <hr>
+{% if is_not_author %}
+    <button><a href="/accounts/upgrade/">Стать автором</a></button>
+{% else %}
 <form action="" method="post">
     {% csrf_token %}
     <p>Удаляем новость "{{ object.title }}"?</p>
     <input type="submit" value="Удалить"/>
 </form>
+{% endif %}
 {% endblock content %}
