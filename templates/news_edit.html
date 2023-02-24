@@ -7,9 +7,14 @@
     <h1> Изменить новость</h1>
 {% endif %}
 <hr>
+{% if is_not_author %}
+    <button> <a href="/accounts/upgrade/">Стать автором</a> </button>
+{% else %}
     <form action="" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Save"/>
     </form>
+{% endif %}
+
 {% endblock content %}

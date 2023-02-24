@@ -76,7 +76,7 @@ class PostsSearch(ListView):
         return context
 
 
-class NewsCreate(CreateView):
+class NewsCreate(LoginRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'news_edit.html'
@@ -87,8 +87,12 @@ class NewsCreate(CreateView):
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_author'] = not self.request.user.groups.filter(name='authors').exists()
+        return context
 
-class ArticlesCreate(CreateView):
+class ArticlesCreate(LoginRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'article_edit.html'
@@ -115,7 +119,7 @@ class PostUpdate(LoginRequiredMixin, UpdateView):
         return self.template_name
 
 
-class PostDelete(DeleteView):
+class PostDelete(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = reverse_lazy('posts_list')
 
