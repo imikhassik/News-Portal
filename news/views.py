@@ -3,9 +3,9 @@ from django.views.generic import (
 )
 from django.urls import reverse_lazy
 from django.shortcuts import HttpResponseRedirect
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
-from .models import Post
+from .models import Post, Author
 from .filters import PostsFilter
 from .forms import PostForm
 from .resources import *
@@ -76,7 +76,8 @@ class PostsSearch(ListView):
         return context
 
 
-class NewsCreate(LoginRequiredMixin, CreateView):
+class NewsCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     form_class = PostForm
     model = Post
     template_name = 'news_edit.html'
@@ -84,6 +85,7 @@ class NewsCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.type = 'N'
+        self.object.author = Author.objects.get(user_id=self.request.user.id)
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
@@ -93,7 +95,8 @@ class NewsCreate(LoginRequiredMixin, CreateView):
         return context
 
 
-class ArticlesCreate(LoginRequiredMixin, CreateView):
+class ArticlesCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     form_class = PostForm
     model = Post
     template_name = 'article_edit.html'
@@ -101,6 +104,7 @@ class ArticlesCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.type = 'A'
+        self.object.author = Author.objects.get(user_id=self.request.user.id)
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
@@ -110,19 +114,24 @@ class ArticlesCreate(LoginRequiredMixin, CreateView):
         return context
 
 
-class PostUpdate(LoginRequiredMixin, UpdateView):
+class PostUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.change_post',)
     form_class = PostForm
     model = Post
 
     def get_template_names(self):
         post = self.get_object()
-        if post.type == news and 'news' in self.request.path:
-            self.template_name = 'news_edit.html'
-        elif post.type == article and 'article' in self.request.path:
-            self.template_name = 'article_edit.html'
+        if post.author == self.request.user.author:
+            if post.type == news and 'news' in self.request.path:
+                self.template_name = 'news_edit.html'
+            elif post.type == article and 'article' in self.request.path:
+                self.template_name = 'article_edit.html'
+            else:
+                self.template_name = '404.html'
+            return self.template_name
         else:
-            self.template_name = '404.html'
-        return self.template_name
+            self.template_name = 'wrong_author.html'
+            return self.template_name
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -130,7 +139,8 @@ class PostUpdate(LoginRequiredMixin, UpdateView):
         return context
 
 
-class PostDelete(LoginRequiredMixin, DeleteView):
+class PostDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    permission_required = ('news.delete_post',)
     model = Post
     success_url = reverse_lazy('posts_list')
 

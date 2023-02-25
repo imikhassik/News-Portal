@@ -11,7 +11,6 @@ class PostForm(forms.ModelForm):
             'title',
             'text',
             'categories',
-            'author'
         ]
 
     def clean(self):
