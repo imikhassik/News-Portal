@@ -3,7 +3,7 @@ from django.views.generic import (
 )
 from django.urls import reverse_lazy
 from django.shortcuts import HttpResponseRedirect
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 from .models import Post, Author
 from .filters import PostsFilter
@@ -76,7 +76,7 @@ class PostsSearch(ListView):
         return context
 
 
-class NewsCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class NewsCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('news.add_post',)
     form_class = PostForm
     model = Post
@@ -95,7 +95,7 @@ class NewsCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         return context
 
 
-class ArticlesCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class ArticlesCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('news.add_post',)
     form_class = PostForm
     model = Post
@@ -114,7 +114,7 @@ class ArticlesCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         return context
 
 
-class PostUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class PostUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = ('news.change_post',)
     form_class = PostForm
     model = Post
@@ -139,7 +139,7 @@ class PostUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         return context
 
 
-class PostDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class PostDelete(PermissionRequiredMixin, DeleteView):
     permission_required = ('news.delete_post',)
     model = Post
     success_url = reverse_lazy('posts_list')
