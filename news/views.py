@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
-from .models import Post, Author
+from .models import Post, Author, Category
 from .filters import PostsFilter
 from .forms import PostForm
 from .resources import *
@@ -50,6 +50,25 @@ class ArticlesList(ListView):
         context = super().get_context_data(**kwargs)
         context['num_of_articles'] = len(Post.objects.filter(type='A'))
         return context
+
+
+class CategoriesList(ListView):
+    model = Category
+    queryset = Category.objects.all()
+    ordering = 'name'
+    template_name = 'categories.html'
+    context_object_name = 'categories'
+
+
+class PostsByCategory(ListView):
+    model = Post
+    template_name = 'posts_in_category.html'
+    context_object_name = 'category'
+
+    def get_queryset(self):
+        print(self.request)
+        posts_by_category = Post.objects.filter(categories=self.kwargs['pk'])
+        return posts_by_category
 
 
 class PostDetail(DetailView):
