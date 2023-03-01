@@ -1,7 +1,7 @@
 from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView
 )
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
@@ -68,10 +68,6 @@ class PostsByCategory(ListView):
     def get_queryset(self):
         posts_by_category = Post.objects.filter(categories=self.kwargs['pk'])
         return posts_by_category
-
-    def subscribe(self):
-        category = self.kwargs['pk']
-        category.subscribers.add(self.request.user)
 
 
 class PostDetail(DetailView):
@@ -180,3 +176,8 @@ class PostDelete(PermissionRequiredMixin, DeleteView):
         context = super().get_context_data(**kwargs)
         context['is_not_author'] = not self.request.user.groups.filter(name='authors').exists()
         return context
+
+
+def subscribe(request, pk):
+    category = Category.objects.filter(pk=pk)
+    category.subscribers.add(request.user)

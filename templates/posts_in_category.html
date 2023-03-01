@@ -11,9 +11,8 @@
     </tr>
     {% endfor %}
 </table>
-<form action="" method="POST">
+<form action="{% url 'subscribe' %}" method="POST">
     {% csrf_token %}
-    {{ category.subscribe }}
     <input type="submit" value="Подписаться"/>
 </form>
 {% endblock content %}
