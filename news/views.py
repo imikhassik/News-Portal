@@ -66,9 +66,12 @@ class PostsByCategory(ListView):
     context_object_name = 'category'
 
     def get_queryset(self):
-        print(self.request)
         posts_by_category = Post.objects.filter(categories=self.kwargs['pk'])
         return posts_by_category
+
+    def subscribe(self):
+        category = self.kwargs['pk']
+        category.subscribers.add(self.request.user)
 
 
 class PostDetail(DetailView):
