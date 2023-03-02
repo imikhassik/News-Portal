@@ -73,6 +73,8 @@ class PostsByCategory(ListView):
         context = super().get_context_data(**kwargs)
         category = Category.objects.get(pk=self.kwargs['pk'])
         context['cat'] = category
+        context['subscribers'] = category.subscribers.all()
+        print(context['subscribers'])
         return context
 
 
@@ -187,4 +189,10 @@ class PostDelete(PermissionRequiredMixin, DeleteView):
 def subscribe(request, pk):
     category = Category.objects.get(pk=pk)
     category.subscribers.add(request.user.id)
+    return HttpResponseRedirect(reverse('posts_in_category', args=[pk]))
+
+
+def unsubscribe(request, pk):
+    category = Category.objects.get(pk=pk)
+    category.subscribers.remove(request.user.id)
     return HttpResponseRedirect(reverse('posts_in_category', args=[pk]))

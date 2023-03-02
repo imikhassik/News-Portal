@@ -11,8 +11,15 @@
     </tr>
     {% endfor %}
 </table>
-<form action="{% url 'subscribe' cat.pk %}" method="POST">
-    {% csrf_token %}
-    <input type="submit" value="Подписаться"/>
-</form>
+{% if user not in subscribers %}
+    <form action="{% url 'subscribe' cat.pk %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Подписаться"/>
+    </form>
+{% else %}
+    <form action="{% url 'unsubscribe' cat.pk %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Отписаться"/>
+    </form>
+{% endif %}
 {% endblock content %}
