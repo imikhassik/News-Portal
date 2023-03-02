@@ -3,7 +3,7 @@
 
 {% block content %}
 <table>
-    {% for post in category %}
+    {% for post in categories_list %}
     <tr>
         <td>{{ post.title|censor }}</td>
         <td>{{ post.created_on|date:'d.m.y' }}</td>
@@ -11,7 +11,7 @@
     </tr>
     {% endfor %}
 </table>
-<form action="{% url 'subscribe' %}" method="POST">
+<form action="{% url 'subscribe' cat.pk %}" method="POST">
     {% csrf_token %}
     <input type="submit" value="Подписаться"/>
 </form>

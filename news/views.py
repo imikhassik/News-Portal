@@ -63,11 +63,17 @@ class CategoriesList(ListView):
 class PostsByCategory(ListView):
     model = Post
     template_name = 'posts_in_category.html'
-    context_object_name = 'category'
+    context_object_name = 'categories_list'
 
     def get_queryset(self):
         posts_by_category = Post.objects.filter(categories=self.kwargs['pk'])
         return posts_by_category
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category = Category.objects.get(pk=self.kwargs['pk'])
+        context['cat'] = category
+        return context
 
 
 class PostDetail(DetailView):
@@ -178,6 +184,6 @@ class PostDelete(PermissionRequiredMixin, DeleteView):
         return context
 
 
-def subscribe(request, pk):
-    category = Category.objects.filter(pk=pk)
+def subscribe(request, cat_pk):
+    category = Category.objects.filter(pk=cat_pk)
     category.subscribers.add(request.user)
