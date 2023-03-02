@@ -3,7 +3,7 @@
 
 {% block content %}
 <table>
-    {% for post in categories_list %}
+    {% for post in posts_in_category %}
     <tr>
         <td>{{ post.title|censor }}</td>
         <td>{{ post.created_on|date:'d.m.y' }}</td>

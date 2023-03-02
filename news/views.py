@@ -63,7 +63,7 @@ class CategoriesList(ListView):
 class PostsByCategory(ListView):
     model = Post
     template_name = 'posts_in_category.html'
-    context_object_name = 'categories_list'
+    context_object_name = 'posts_in_category'
 
     def get_queryset(self):
         posts_by_category = Post.objects.filter(categories=self.kwargs['pk'])
