@@ -184,6 +184,7 @@ class PostDelete(PermissionRequiredMixin, DeleteView):
         return context
 
 
-def subscribe(request, cat_pk):
-    category = Category.objects.filter(pk=cat_pk)
-    category.subscribers.add(request.user)
+def subscribe(request, pk):
+    category = Category.objects.get(pk=pk)
+    category.subscribers.add(request.user.id)
+    return HttpResponseRedirect(reverse('posts_in_category', args=[pk]))
