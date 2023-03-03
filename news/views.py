@@ -117,28 +117,26 @@ class NewsCreate(LoginRequiredMixin, CreateView, PermissionRequiredMixin):
         self.object.save()
         result = super().form_valid(form)
 
-        html_content = render_to_string(
-            'post_email.html',
-            {
-                'post': self.object
-            }
+        subscribers = self.object.categories.values(
+            'subscribers__email', 'subscribers__username'
         )
+        for subscriber in subscribers:
+            html_content = render_to_string(
+                'post_email.html',
+                {
+                    'post': self.object,
+                    'username': subscriber.get("subscribers__username")
+                }
+            )
 
-        categories_list = self.object.categories.all()
-        email_list = []
-        for cat in categories_list:
-            for sub in cat.subscribers.all():
-                email_list.append(sub.email)
-
-        msg = EmailMultiAlternatives(
-            subject=self.object.title,
-            body=self.object.text,
-            from_email='ilya.mikhassik@yandex.ru',
-            to=email_list
-        )
-        msg.attach_alternative(html_content, "text/html")
-
-        msg.send()
+            msg = EmailMultiAlternatives(
+                subject=self.object.title,
+                body=self.object.text,
+                from_email='ilya.mikhassik@yandex.ru',
+                to=[subscriber.get("subscribers__email")]
+            )
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
 
         return result
 
@@ -159,7 +157,30 @@ class ArticlesCreate(LoginRequiredMixin,  CreateView, PermissionRequiredMixin):
         self.object.type = 'A'
         self.object.author = Author.objects.get(user_id=self.request.user.id)
         self.object.save()
-        return super().form_valid(form)
+        result = super().form_valid(form)
+
+        subscribers = self.object.categories.values(
+            'subscribers__email', 'subscribers__username'
+        )
+        for subscriber in subscribers:
+            html_content = render_to_string(
+                'post_email.html',
+                {
+                    'post': self.object,
+                    'username': subscriber.get("subscribers__username")
+                }
+            )
+
+            msg = EmailMultiAlternatives(
+                subject=self.object.title,
+                body=self.object.text,
+                from_email='ilya.mikhassik@yandex.ru',
+                to=[subscriber.get("subscribers__email")]
+            )
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+
+        return result
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
