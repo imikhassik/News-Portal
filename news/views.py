@@ -141,7 +141,7 @@ class NewsCreate(LoginRequiredMixin, CreateView, PermissionRequiredMixin):
         #
         # msg.send()
 
-        return HttpResponseRedirect(self.get_success_url())
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -160,7 +160,7 @@ class ArticlesCreate(LoginRequiredMixin,  CreateView, PermissionRequiredMixin):
         self.object.type = 'A'
         self.object.author = Author.objects.get(user_id=self.request.user.id)
         self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
