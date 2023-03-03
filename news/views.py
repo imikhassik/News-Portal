@@ -115,33 +115,32 @@ class NewsCreate(LoginRequiredMixin, CreateView, PermissionRequiredMixin):
         self.object.type = 'N'
         self.object.author = Author.objects.get(user_id=self.request.user.id)
         self.object.save()
+        result = super().form_valid(form)
 
-        # html_content = render_to_string(
-        #     'post_email.html',
-        #     {
-        #         'post': self.object
-        #     }
-        # )
-        #
-        # categories_list = self.object.categories.all()
-        # email_list = []
-        # for cat in categories_list:
-        #     for sub in cat.subsribers.all():
-        #         email_list.append(sub.email)
-        #
-        # print(email_list)
-        #
-        # msg = EmailMultiAlternatives(
-        #     subject=self.object.title,
-        #     body=self.object.text,
-        #     from_email='ilya.mikhassik@yandex.ru',
-        #     to=email_list
-        # )
-        # msg.attach_alternative(html_content, "text/html")
-        #
-        # msg.send()
+        html_content = render_to_string(
+            'post_email.html',
+            {
+                'post': self.object
+            }
+        )
 
-        return super().form_valid(form)
+        categories_list = self.object.categories.all()
+        email_list = []
+        for cat in categories_list:
+            for sub in cat.subscribers.all():
+                email_list.append(sub.email)
+
+        msg = EmailMultiAlternatives(
+            subject=self.object.title,
+            body=self.object.text,
+            from_email='ilya.mikhassik@yandex.ru',
+            to=email_list
+        )
+        msg.attach_alternative(html_content, "text/html")
+
+        msg.send()
+
+        return result
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
