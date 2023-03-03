@@ -116,30 +116,30 @@ class NewsCreate(LoginRequiredMixin, CreateView, PermissionRequiredMixin):
         self.object.author = Author.objects.get(user_id=self.request.user.id)
         self.object.save()
 
-        html_content = render_to_string(
-            'post_email.html',
-            {
-                'post': self.object
-            }
-        )
-
-        categories_list = self.object.categories.all()
-        email_list = []
-        for cat in categories_list:
-            for sub in cat.subsribers.all():
-                email_list.append(sub.email)
-
-        print(email_list)
-
-        msg = EmailMultiAlternatives(
-            subject=self.object.title,
-            body=self.object.text,
-            from_email='ilya.mikhassik@yandex.ru',
-            to=email_list
-        )
-        msg.attach_alternative(html_content, "text/html")
-
-        msg.send()
+        # html_content = render_to_string(
+        #     'post_email.html',
+        #     {
+        #         'post': self.object
+        #     }
+        # )
+        #
+        # categories_list = self.object.categories.all()
+        # email_list = []
+        # for cat in categories_list:
+        #     for sub in cat.subsribers.all():
+        #         email_list.append(sub.email)
+        #
+        # print(email_list)
+        #
+        # msg = EmailMultiAlternatives(
+        #     subject=self.object.title,
+        #     body=self.object.text,
+        #     from_email='ilya.mikhassik@yandex.ru',
+        #     to=email_list
+        # )
+        # msg.attach_alternative(html_content, "text/html")
+        #
+        # msg.send()
 
         return HttpResponseRedirect(self.get_success_url())
 
