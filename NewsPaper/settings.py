@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     
-    'news',
+    'news.apps.NewsConfig',
     'accounts',
 ]
 
