@@ -13,7 +13,6 @@ def notify_subscribers(sender, instance, action, **kwargs):
             'subscribers__email', 'subscribers__username'
         )
         for subscriber in subscribers:
-            print(subscriber)
             html_content = render_to_string(
                 'post_email.html',
                 {

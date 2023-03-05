@@ -9,6 +9,8 @@
 <hr>
 {% if is_not_author %}
     <button> <a href="/accounts/upgrade/">Стать автором</a> </button>
+{% elif no_more_posts %}
+    <h2>Можно создавать не более 3-х постов в день. Возвращайтесь завтра.</h2>
 {% else %}
     <form action="" method="POST">
         {% csrf_token %}

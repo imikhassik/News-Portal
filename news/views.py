@@ -4,6 +4,7 @@ from django.views.generic import (
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.utils.timezone import datetime
 
 from .models import Post, Author, Category
 from .filters import PostsFilter
@@ -74,7 +75,6 @@ class PostsByCategory(ListView):
         category = Category.objects.get(pk=self.kwargs['pk'])
         context['cat'] = category
         context['subscribers'] = category.subscribers.all()
-        print(context['subscribers'])
         return context
 
 
@@ -118,6 +118,9 @@ class NewsCreate(LoginRequiredMixin, CreateView, PermissionRequiredMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_not_author'] = not self.request.user.groups.filter(name='authors').exists()
+        context['no_more_posts'] = Post.objects.filter(
+            author=Author.objects.get(user_id=self.request.user.id),
+            created_on__date=datetime.date(datetime.today())).count() >= 3
         return context
 
 
