@@ -140,6 +140,9 @@ class ArticlesCreate(LoginRequiredMixin,  CreateView, PermissionRequiredMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_not_author'] = not self.request.user.groups.filter(name='authors').exists()
+        context['no_more_posts'] = Post.objects.filter(
+            author=Author.objects.get(user_id=self.request.user.id),
+            created_on__date=datetime.date(datetime.today())).count() >= 3
         return context
 
 
