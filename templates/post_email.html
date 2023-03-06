@@ -9,5 +9,6 @@
     <h2>{{ post.title }}</h2>
     <p>{{ post.text|truncatechars:50 }}</p>
     <p>Здравствуй, {{ username }}. Новая статья в твоем любимом разделе!</p>
+    <a href="http://{{ domain }}:8000{{ post_url }}">Прочесть</a>
 </body>
 </html>
