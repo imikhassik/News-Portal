@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     
     'news.apps.NewsConfig',
     'accounts',
+
+    'django_apscheduler',
 ]
 
 LOGIN_URL = '/accounts/login/'
@@ -167,3 +169,6 @@ EMAIL_HOST_USER = str(os.getenv('EMAIL_HOST_USER'))
 EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_HOST_PASSWORD'))
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = str(os.getenv('EMAIL_HOST_USER')) + '@yandex.ru'
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25
