@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% for post in post_list %}
+        {{ post.title }} <a href="http://{{ domain }}:8000/posts/{{ post.pk }}">Дальше</a><br>
+    {% endfor%}
+</body>
+</html>

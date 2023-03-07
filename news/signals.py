@@ -25,10 +25,10 @@ def notify_subscribers(sender, instance, action, **kwargs):
             )
 
             msg = EmailMultiAlternatives(
-            subject=instance.title,
-            body=instance.text,
-            from_email='ilya.mikhassik@yandex.ru',
-            to=[subscriber.get("subscribers__email")],
-        )
+                subject=instance.title,
+                body=instance.text,
+                from_email='ilya.mikhassik@yandex.ru',
+                to=[subscriber.get("subscribers__email")],
+                )
             msg.attach_alternative(html_content, "text/html")
             msg.send()
