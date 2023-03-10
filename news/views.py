@@ -10,7 +10,7 @@ from .models import Post, Author, Category
 from .filters import PostsFilter
 from .forms import PostForm
 from .resources import *
-from .tasks import hello
+from .tasks import notify_subscribers
 
 
 class PostsList(ListView):
@@ -115,7 +115,7 @@ class NewsCreate(LoginRequiredMixin, CreateView, PermissionRequiredMixin):
         self.object.author = Author.objects.get(user_id=self.request.user.id)
         self.object.save()
         result = super().form_valid(form)
-        hello.delay()
+        notify_subscribers.apply_async([self.object.pk])
         return result
 
     def get_context_data(self, **kwargs):
@@ -138,7 +138,9 @@ class ArticlesCreate(LoginRequiredMixin,  CreateView, PermissionRequiredMixin):
         self.object.type = 'A'
         self.object.author = Author.objects.get(user_id=self.request.user.id)
         self.object.save()
-        return super().form_valid(form)
+        result = super().form_valid(form)
+        notify_subscribers.apply_async([self.object.pk])
+        return result
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
