@@ -5,6 +5,8 @@ A user can subscribe to a category and receive emails when posts are added to th
 weekly email with all the new posts in the category they subscribed to.
 
 Signup, authentication and authorization implemented with django-allauth library.
-Job scheduling implemented with django-apscheduler.
+
+Subscriber emailing and scheduling implemented with celery tasks.
+Also, django signals and apscheduler jobs set up and commented out as an alternative.
 
 This is a work in progress.
