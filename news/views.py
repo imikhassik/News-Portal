@@ -10,6 +10,7 @@ from .models import Post, Author, Category
 from .filters import PostsFilter
 from .forms import PostForm
 from .resources import *
+from .tasks import hello
 
 
 class PostsList(ListView):
@@ -113,7 +114,9 @@ class NewsCreate(LoginRequiredMixin, CreateView, PermissionRequiredMixin):
         self.object.type = 'N'
         self.object.author = Author.objects.get(user_id=self.request.user.id)
         self.object.save()
-        return super().form_valid(form)
+        result = super().form_valid(form)
+        hello.delay()
+        return result
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
