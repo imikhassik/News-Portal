@@ -5,6 +5,7 @@ from django.urls import reverse_lazy, reverse
 from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.utils.timezone import datetime
+from django.core.cache import cache
 
 from .models import Post, Author, Category
 from .filters import PostsFilter
@@ -83,6 +84,16 @@ class PostDetail(DetailView):
     model = Post
     template_name = 'post.html'
     context_object_name = 'post'
+    queryset = Post.objects.all()
+
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f"post-{self.kwargs['pk']}", None)
+
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f"post-{self.kwargs['pk']}", obj)
+
+        return obj
 
 
 class PostsSearch(ListView):
