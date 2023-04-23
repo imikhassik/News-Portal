@@ -297,6 +297,6 @@ LOGGING = {
     }
 }
 
-LOCALE_PATH = [
+LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale')
 ]
