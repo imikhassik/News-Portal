@@ -1,3 +1,5 @@
+from django.http import HttpResponse
+from django.views import View
 from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView
 )
@@ -6,12 +8,20 @@ from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.utils.timezone import datetime
 from django.core.cache import cache
+from django.utils.translation import gettext as _
 
 from .models import Post, Author, Category
 from .filters import PostsFilter
 from .forms import PostForm
 from .resources import *
 from .tasks import notify_subscribers
+
+
+class Index(View):
+    def get(self, request):
+        string = _('Hello world')
+
+        return HttpResponse(string)
 
 
 class PostsList(ListView):
